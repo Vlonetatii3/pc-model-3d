@@ -14,7 +14,13 @@ const ORBIT_LIMITS = {
   maxPolarAngle: Math.PI * 0.56,
 };
 
-export default function Viewer() {
+export interface ViewerProps {
+  modelNodes: ReadonlySet<string>;
+  selectedNode: string | null;
+  onSelectNode: (node: string | null) => void;
+}
+
+export default function Viewer(props: ViewerProps) {
   return (
     <div className="viewer">
       <div className="viewer-canvas">
@@ -25,13 +31,14 @@ export default function Viewer() {
         >
           <StudioLighting />
           <Suspense fallback={null}>
-            <Model url={MODEL_URL} />
+            <Model url={MODEL_URL} {...props} />
           </Suspense>
           <OrbitControls makeDefault enableDamping enablePan={false} {...ORBIT_LIMITS} />
         </Canvas>
       </div>
       <p className="viewer-help">
-        Arrastra para rotar. Usa la rueda del mouse o pellizca para acercar y alejar.
+        Arrastra para rotar. Usa la rueda del mouse o pellizca para acercar y alejar. Haz clic en
+        una pieza para ver qué es.
       </p>
     </div>
   );

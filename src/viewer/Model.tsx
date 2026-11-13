@@ -1,18 +1,16 @@
 import { ContactShadows } from '@react-three/drei';
 import { useEffect, useState } from 'react';
 import AutoFrame from './AutoFrame';
-import GltfModel from './GltfModel';
+import GltfModel, { type GltfModelProps } from './GltfModel';
 import ModelErrorBoundary from './ModelErrorBoundary';
 import { isModelAvailable, warnMissingModel } from './modelAvailability';
 import PlaceholderModel from './PlaceholderModel';
 
 type Status = 'checking' | 'available' | 'missing';
 
-interface ModelProps {
-  url: string;
-}
+type ModelProps = GltfModelProps;
 
-export default function Model({ url }: ModelProps) {
+export default function Model({ url, ...selection }: ModelProps) {
   const [status, setStatus] = useState<Status>('checking');
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export default function Model({ url }: ModelProps) {
       }
     >
       <AutoFrame>
-        <GltfModel url={url} />
+        <GltfModel url={url} {...selection} />
       </AutoFrame>
       {/* Fuera de AutoFrame para no afectar el encuadre. El modelo apoya en y = 0. */}
       <ContactShadows position={[0, 0.0005, 0]} scale={1} blur={2.5} opacity={0.5} far={0.25} />
