@@ -4,6 +4,7 @@
   --color-surface: #f6f7f9;
   --color-border: #dde1e6;
   --color-accent: #0b5cad;
+  --color-muted: #4a5160;
 
   font-family:
     system-ui,
@@ -27,4 +28,16 @@ a {
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

@@ -15,7 +15,7 @@ Trabajar en orden salvo que una tarea indique lo contrario.
 ## Semana 2: visor
 
 - [x] **T07** Selección por clic de nodos con resaltado de la pieza activa.
-- [ ] **T08** Panel de detalle: nombre, función, especificaciones clave y enlaces a guías.
+- [x] **T08** Panel de detalle: nombre, función, especificaciones clave y enlaces a guías.
 - [ ] **T09** Lista lateral accesible por teclado, sincronizada con la selección del visor.
 - [ ] **T10** Fallback sin WebGL: lista de componentes e imagen de respaldo.
 - [ ] **T11** Test que verifica que cada `modelNode` existe como nodo en el `.glb`.
