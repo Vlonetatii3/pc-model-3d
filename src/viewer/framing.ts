@@ -22,7 +22,7 @@ export function computeFraming(
   fovDeg: number,
   aspect: number,
   direction: Vector3,
-  margin = 1.15,
+  margin = 1.0,
 ): Framing {
   const sphere = box.getBoundingSphere(new Sphere());
   const radius = Math.max(sphere.radius, 1e-3);

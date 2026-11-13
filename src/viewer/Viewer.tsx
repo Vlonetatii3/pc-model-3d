@@ -3,20 +3,31 @@ import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 import Model from './Model';
 import { MODEL_URL } from './modelAvailability';
+import StudioLighting from './StudioLighting';
 import './Viewer.css';
+
+// Ángulos en radianes. Azimut 0 = frente del gabinete; -π/2 = lado abierto.
+const ORBIT_LIMITS = {
+  minAzimuthAngle: -Math.PI * 0.78,
+  maxAzimuthAngle: Math.PI * 0.35,
+  minPolarAngle: Math.PI * 0.12,
+  maxPolarAngle: Math.PI * 0.56,
+};
 
 export default function Viewer() {
   return (
     <div className="viewer">
       <div className="viewer-canvas">
-        <Canvas camera={{ position: [0.8, 0.5, 0.8], fov: 45, near: 0.01, far: 100 }} dpr={[1, 2]}>
-          <hemisphereLight args={['#ffffff', '#8a94a6', 0.8]} />
-          <directionalLight position={[2, 3, 2]} intensity={1.4} />
-          <directionalLight position={[-2, 1, -1]} intensity={0.4} />
+        <Canvas
+          camera={{ position: [-0.8, 0.45, 0.6], fov: 40, near: 0.01, far: 100 }}
+          dpr={[1, 2]}
+          gl={{ antialias: true }}
+        >
+          <StudioLighting />
           <Suspense fallback={null}>
             <Model url={MODEL_URL} />
           </Suspense>
-          <OrbitControls makeDefault enableDamping enablePan={false} />
+          <OrbitControls makeDefault enableDamping enablePan={false} {...ORBIT_LIMITS} />
         </Canvas>
       </div>
       <p className="viewer-help">

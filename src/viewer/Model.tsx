@@ -1,3 +1,4 @@
+import { ContactShadows } from '@react-three/drei';
 import { useEffect, useState } from 'react';
 import AutoFrame from './AutoFrame';
 import GltfModel from './GltfModel';
@@ -49,6 +50,8 @@ export default function Model({ url }: ModelProps) {
       <AutoFrame>
         <GltfModel url={url} />
       </AutoFrame>
+      {/* Fuera de AutoFrame para no afectar el encuadre. El modelo apoya en y = 0. */}
+      <ContactShadows position={[0, 0.0005, 0]} scale={1} blur={2.5} opacity={0.5} far={0.25} />
     </ModelErrorBoundary>
   );
 }
