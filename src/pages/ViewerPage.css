@@ -18,3 +18,8 @@
     align-items: start;
   }
 }
+
+.viewer-layout-side {
+  display: grid;
+  gap: 1rem;
+}
