@@ -48,7 +48,8 @@ docs/            MVP.md, TASKS.md
 
 ## Modelos 3D
 
-- No generes modelos 3D ni los inventes. Los provee el autor en `public/models/`.
+- Los modelos 3D se generan con `blender/build_model.py` (`npm run model:build`) o los provee el autor en `public/models/`. Si el autor provee uno, ese es el oficial y el script no lo sobrescribe sin acuerdo.
+- Piezas genéricas, sin logos ni marcas. Las dimensiones que no salen de un estándar publicado se marcan como aproximadas en el script.
 - Si falta un modelo, muestra un placeholder y registra la advertencia en consola.
 - Cada pieza clicable es un nodo cuyo nombre coincide con `modelNode` en `components.json`.
 
