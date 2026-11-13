@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import AutoFrame from './AutoFrame';
 import GltfModel from './GltfModel';
 import ModelErrorBoundary from './ModelErrorBoundary';
 import { isModelAvailable, warnMissingModel } from './modelAvailability';
@@ -26,16 +27,28 @@ export default function Model({ url }: ModelProps) {
   }, [url]);
 
   if (status === 'checking') return null;
-  if (status === 'missing') return <PlaceholderModel />;
+  if (status === 'missing') {
+    return (
+      <AutoFrame>
+        <PlaceholderModel />
+      </AutoFrame>
+    );
+  }
 
   return (
     <ModelErrorBoundary
-      fallback={<PlaceholderModel />}
+      fallback={
+        <AutoFrame>
+          <PlaceholderModel />
+        </AutoFrame>
+      }
       onError={(error) =>
         console.warn(`[visor] No se pudo leer "${url}". Se muestra un placeholder.`, error)
       }
     >
-      <GltfModel url={url} />
+      <AutoFrame>
+        <GltfModel url={url} />
+      </AutoFrame>
     </ModelErrorBoundary>
   );
 }
