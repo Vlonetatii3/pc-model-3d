@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
+import { isWebGLAvailable } from '../viewer/webgl';
 import ViewerPage from './ViewerPage';
 
 // El visor 3D necesita WebGL, que jsdom no tiene. Aquí se prueba la página sin él.
@@ -9,6 +10,12 @@ vi.mock('../viewer/Viewer', () => ({
     <div data-testid="visor">{selectedNode ?? 'sin selección'}</div>
   ),
 }));
+
+vi.mock('../viewer/webgl', () => ({ isWebGLAvailable: vi.fn(() => true) }));
+
+beforeEach(() => {
+  vi.mocked(isWebGLAvailable).mockReturnValue(true);
+});
 
 function renderPage() {
   render(
@@ -38,5 +45,26 @@ describe('ViewerPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Fuente de poder' }));
     await userEvent.click(screen.getByRole('button', { name: 'Cerrar' }));
     expect(screen.getByRole('button', { name: 'Fuente de poder' })).toHaveFocus();
+  });
+
+  describe('sin WebGL', () => {
+    beforeEach(() => {
+      vi.mocked(isWebGLAvailable).mockReturnValue(false);
+    });
+
+    it('muestra la imagen de respaldo y no carga el visor', () => {
+      renderPage();
+      expect(screen.getByRole('img', { name: /PC de escritorio/ })).toBeInTheDocument();
+      expect(screen.getByText(/WebGL no está disponible/)).toBeInTheDocument();
+      expect(screen.queryByTestId('visor')).toBeNull();
+    });
+
+    it('la lista de componentes sigue funcionando (criterio de aceptación del MVP)', async () => {
+      renderPage();
+      await userEvent.click(screen.getByRole('button', { name: 'Tarjeta gráfica (GPU)' }));
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'Tarjeta gráfica (GPU)' }),
+      ).toBeInTheDocument();
+    });
   });
 });

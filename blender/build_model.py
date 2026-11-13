@@ -2,7 +2,7 @@
 Genera public/models/pc-completa.glb: una PC de escritorio genérica y estilizada.
 
 Uso:
-    npm run model:build
+    npm run model:build      # exporta el .glb y renderiza la imagen de respaldo
     # equivale a:
     blender --background --factory-startup --python blender/build_model.py
 
@@ -37,6 +37,8 @@ import bpy
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(ROOT, "public", "models", "pc-completa.glb")
+# Imagen de respaldo para navegadores sin WebGL (se renderiza con la misma escena).
+FALLBACK_IMAGE = os.path.join(ROOT, "public", "images", "pc-respaldo.webp")
 
 MM = 0.001
 
@@ -322,6 +324,60 @@ def export(path):
     )
 
 
+def render_fallback(path):
+    """Renderiza la vista inicial del visor (lado abierto, desde el frente) con fondo transparente."""
+    from mathutils import Vector
+
+    scene = bpy.context.scene
+    target = Vector((0.0, 0.0, 0.235))
+    # Misma dirección que la cámara inicial del visor (src/viewer/Viewer.tsx), en ejes de Blender.
+    direction = Vector((-0.8, -0.6, 0.45)).normalized()
+    radius = 0.35  # radio aproximado de la esfera que envuelve el gabinete
+    fov = math.radians(40)
+
+    cam_data = bpy.data.cameras.new("CamaraRespaldo")
+    cam_data.sensor_fit = "VERTICAL"
+    cam_data.angle_y = fov
+    cam = bpy.data.objects.new("CamaraRespaldo", cam_data)
+    scene.collection.objects.link(cam)
+    cam.location = target + direction * (radius / math.sin(fov / 2))
+    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+    scene.camera = cam
+
+    def sun(name, rotation, strength):
+        data = bpy.data.lights.new(name, "SUN")
+        data.energy = strength
+        obj = bpy.data.objects.new(name, data)
+        obj.rotation_euler = [math.radians(a) for a in rotation]
+        scene.collection.objects.link(obj)
+
+    sun("LuzPrincipal", (50, 0, -60), 3.5)
+    sun("LuzRelleno", (60, 0, 200), 1.0)
+
+    world = bpy.data.worlds.new("Mundo")
+    if world.node_tree is None:  # Blender < 5
+        world.use_nodes = True
+    world.node_tree.nodes["Background"].inputs["Color"].default_value = (0.9, 0.92, 0.95, 1)
+    world.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.3
+    scene.world = world
+
+    scene.render.engine = "BLENDER_EEVEE"
+    scene.render.film_transparent = True
+    scene.render.resolution_x = 960
+    scene.render.resolution_y = 800
+    scene.render.image_settings.file_format = "WEBP"
+    scene.render.image_settings.color_mode = "RGBA"
+    scene.render.image_settings.quality = 85
+    scene.view_settings.view_transform = "Standard"
+    scene.render.filepath = path
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    bpy.ops.render.render(write_still=True)
+
+    # La cámara y las luces solo sirven para el render: no deben quedar en el .glb.
+    for obj in (cam, *[o for o in scene.objects if o.type == "LIGHT"]):
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+
 def main():
     clear_scene()
     build_case()
@@ -334,12 +390,17 @@ def main():
 
     out = OUTPUT
     if "--" in sys.argv:
-        args = sys.argv[sys.argv.index("--") + 1:]
+        args = [a for a in sys.argv[sys.argv.index("--") + 1:] if not a.startswith("--")]
         if args:
             out = os.path.abspath(args[0])
     export(out)
     size_kb = os.path.getsize(out) / 1024
     print(f"[build_model] Exportado {out} ({size_kb:.0f} KB)")
+
+    if "--sin-imagen" not in sys.argv:
+        render_fallback(FALLBACK_IMAGE)
+        size_kb = os.path.getsize(FALLBACK_IMAGE) / 1024
+        print(f"[build_model] Imagen de respaldo {FALLBACK_IMAGE} ({size_kb:.0f} KB)")
 
 
 if __name__ == "__main__":

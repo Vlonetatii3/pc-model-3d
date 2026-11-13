@@ -3,6 +3,9 @@ import ComponentDetail from '../components/ComponentDetail';
 import ComponentList from '../components/ComponentList';
 import { componentButtonId } from '../components/componentButtonId';
 import { components, getComponentById, getComponentByModelNode } from '../data/components';
+import ViewerErrorBoundary from '../viewer/ViewerErrorBoundary';
+import ViewerFallback from '../viewer/ViewerFallback';
+import { isWebGLAvailable } from '../viewer/webgl';
 import './ViewerPage.css';
 
 // Carga diferida: three.js y el modelo solo se descargan al abrir el visor.
@@ -12,6 +15,7 @@ const MODEL_NODES: ReadonlySet<string> = new Set(components.map((c) => c.modelNo
 
 export default function ViewerPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hasWebGL] = useState(isWebGLAvailable);
   const selected = selectedId ? (getComponentById(selectedId) ?? null) : null;
 
   const handleSelectNode = (node: string | null) => {
@@ -40,13 +44,19 @@ export default function ViewerPage() {
       <p>Explora una PC completa en 3D.</p>
       <div className="viewer-layout">
         <div className="viewer-layout-stage">
-          <Suspense fallback={<p role="status">Cargando visor…</p>}>
-            <Viewer
-              modelNodes={MODEL_NODES}
-              selectedNode={selected?.modelNode ?? null}
-              onSelectNode={handleSelectNode}
-            />
-          </Suspense>
+          {hasWebGL ? (
+            <ViewerErrorBoundary fallback={<ViewerFallback reason="error" />}>
+              <Suspense fallback={<p role="status">Cargando visor…</p>}>
+                <Viewer
+                  modelNodes={MODEL_NODES}
+                  selectedNode={selected?.modelNode ?? null}
+                  onSelectNode={handleSelectNode}
+                />
+              </Suspense>
+            </ViewerErrorBoundary>
+          ) : (
+            <ViewerFallback reason="sin-webgl" />
+          )}
         </div>
         <div className="viewer-layout-side">
           <ComponentList components={components} selectedId={selectedId} onSelect={setSelectedId} />
