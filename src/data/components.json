@@ -1,0 +1,86 @@
+[
+  {
+    "id": "placa-madre",
+    "name": "Placa madre",
+    "category": "base",
+    "summary": "Conecta todos los componentes entre sí.",
+    "function": "Es la placa principal de la PC. En ella se instalan el procesador, la memoria RAM y las tarjetas de expansión, y a ella se conectan la fuente, el almacenamiento y los botones del gabinete. Define qué procesadores y qué tipo de memoria se pueden usar.",
+    "keySpecs": [
+      { "label": "Socket", "value": "pendiente de verificar" },
+      { "label": "Chipset", "value": "pendiente de verificar" },
+      { "label": "Factor de forma", "value": "pendiente de verificar" }
+    ],
+    "modelNode": "PLACA_MADRE",
+    "relatedGuides": ["armado-paso-a-paso", "cableado-basico", "pc-no-enciende"]
+  },
+  {
+    "id": "cpu",
+    "name": "Procesador (CPU)",
+    "category": "procesamiento",
+    "summary": "Ejecuta las instrucciones de los programas.",
+    "function": "Es el componente que realiza la mayor parte de los cálculos de la PC: ejecuta el sistema operativo y los programas. Se instala en el socket de la placa madre y necesita un disipador para mantener una temperatura segura.",
+    "keySpecs": [
+      { "label": "Núcleos e hilos", "value": "pendiente de verificar" },
+      { "label": "Socket", "value": "pendiente de verificar" },
+      { "label": "TDP", "value": "pendiente de verificar" }
+    ],
+    "modelNode": "CPU",
+    "relatedGuides": ["armado-paso-a-paso", "pc-no-enciende"]
+  },
+  {
+    "id": "ram",
+    "name": "Memoria RAM",
+    "category": "memoria",
+    "summary": "Guarda temporalmente los datos en uso.",
+    "function": "Almacena los datos y programas que se están usando en este momento para que el procesador acceda a ellos rápidamente. Su contenido se borra al apagar la PC. Se instala en las ranuras de memoria de la placa madre.",
+    "keySpecs": [
+      { "label": "Tipo", "value": "pendiente de verificar" },
+      { "label": "Capacidad", "value": "pendiente de verificar" },
+      { "label": "Frecuencia", "value": "pendiente de verificar" }
+    ],
+    "modelNode": "RAM_1",
+    "relatedGuides": ["armado-paso-a-paso", "pc-no-enciende"]
+  },
+  {
+    "id": "gpu",
+    "name": "Tarjeta gráfica (GPU)",
+    "category": "procesamiento",
+    "summary": "Procesa imágenes y cálculos gráficos.",
+    "function": "Genera la imagen que se muestra en el monitor y acelera tareas gráficas como juegos, edición de video o modelado 3D. Se instala en una ranura de expansión de la placa madre y, según el modelo, necesita cables de alimentación propios desde la fuente.",
+    "keySpecs": [
+      { "label": "Memoria", "value": "pendiente de verificar" },
+      { "label": "Interfaz", "value": "pendiente de verificar" },
+      { "label": "Conectores de alimentación", "value": "pendiente de verificar" }
+    ],
+    "modelNode": "GPU",
+    "relatedGuides": ["armado-paso-a-paso", "cableado-basico"]
+  },
+  {
+    "id": "fuente",
+    "name": "Fuente de poder",
+    "category": "energia",
+    "summary": "Alimenta con electricidad a todos los componentes.",
+    "function": "Convierte la corriente del tomacorriente en los voltajes que usan los componentes de la PC y los distribuye mediante sus cables. Puede conservar carga eléctrica aun desconectada, por lo que nunca debe abrirse.",
+    "keySpecs": [
+      { "label": "Potencia", "value": "pendiente de verificar" },
+      { "label": "Certificación de eficiencia", "value": "pendiente de verificar" },
+      { "label": "Conectores", "value": "pendiente de verificar" }
+    ],
+    "modelNode": "FUENTE",
+    "relatedGuides": ["armado-paso-a-paso", "cableado-basico", "pc-no-enciende"]
+  },
+  {
+    "id": "almacenamiento",
+    "name": "Almacenamiento",
+    "category": "almacenamiento",
+    "summary": "Guarda los archivos y el sistema operativo de forma permanente.",
+    "function": "Conserva el sistema operativo, los programas y los archivos aunque la PC esté apagada. Puede ser un disco de estado sólido (SSD) o un disco duro (HDD), conectado a la placa madre por cable o instalado directamente en una ranura.",
+    "keySpecs": [
+      { "label": "Tipo", "value": "pendiente de verificar" },
+      { "label": "Capacidad", "value": "pendiente de verificar" },
+      { "label": "Interfaz", "value": "pendiente de verificar" }
+    ],
+    "modelNode": "ALMACENAMIENTO",
+    "relatedGuides": ["armado-paso-a-paso", "cableado-basico"]
+  }
+]
