@@ -6,7 +6,7 @@ Trabajar en orden salvo que una tarea indique lo contrario.
 ## Semana 1: base
 
 - [x] **T01** Inicializar proyecto con Vite, React, TypeScript, ESLint, Prettier y Vitest.
-- [ ] **T02** Layout base con header y navegación: Inicio, Visor, Guías, Glosario, Apoyar, Legal.
+- [x] **T02** Layout base con header y navegación: Inicio, Visor, Guías, Glosario, Apoyar, Legal.
 - [ ] **T03** Crear `src/data/components.json` con 6 componentes (placa madre, CPU, RAM, GPU, fuente, almacenamiento). Usar el modelo de datos de `docs/MVP.md`.
 - [ ] **T04** Validar `components.json` con zod y agregar tests.
 - [ ] **T05** Cargar un `.glb` de prueba en el visor (puede ser un cubo placeholder).

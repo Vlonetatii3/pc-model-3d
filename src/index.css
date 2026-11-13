@@ -1,4 +1,10 @@
 :root {
+  --color-text: #1a1a1a;
+  --color-bg: #ffffff;
+  --color-surface: #f6f7f9;
+  --color-border: #dde1e6;
+  --color-accent: #0b5cad;
+
   font-family:
     system-ui,
     -apple-system,
@@ -6,10 +12,19 @@
     Roboto,
     sans-serif;
   line-height: 1.5;
-  color: #1a1a1a;
-  background: #ffffff;
+  color: var(--color-text);
+  background: var(--color-bg);
 }
 
 body {
   margin: 0;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
 }
