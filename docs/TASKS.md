@@ -18,7 +18,7 @@ Trabajar en orden salvo que una tarea indique lo contrario.
 - [x] **T08** Panel de detalle: nombre, función, especificaciones clave y enlaces a guías.
 - [x] **T09** Lista lateral accesible por teclado, sincronizada con la selección del visor.
 - [x] **T10** Fallback sin WebGL: lista de componentes e imagen de respaldo.
-- [ ] **T11** Test que verifica que cada `modelNode` existe como nodo en el `.glb`.
+- [x] **T11** Test que verifica que cada `modelNode` existe como nodo en el `.glb`.
 
 ## Semana 3: contenido
 
