@@ -22,7 +22,7 @@ Trabajar en orden salvo que una tarea indique lo contrario.
 
 ## Semana 3: contenido
 
-- [ ] **T12** Cargar guías desde `content/guides/` con frontmatter validado.
+- [x] **T12** Cargar guías desde `content/guides/` con frontmatter validado.
 - [ ] **T13** Página de guía: pasos, errores comunes, "cuándo pedir ayuda profesional" y `SafetyNotice` cuando corresponda.
 - [ ] **T14** Redactar guía "Armado de PC paso a paso". Marcar contenido pendiente de revisión técnica.
 - [ ] **T15** Redactar guía "Cableado básico". Marcar contenido pendiente de revisión técnica.

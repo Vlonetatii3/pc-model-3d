@@ -1,11 +1,11 @@
 import { Link, useParams } from 'react-router';
-import { getGuideSummary } from '../guides/catalog';
+import { getGuide } from '../guides/guides';
 import NotFoundPage from './NotFoundPage';
 
-/** Provisional hasta T12/T13: muestra el título de la guía y avisa que está en preparación. */
+/** Provisional hasta T13: muestra el título de la guía y avisa que está en preparación. */
 export default function GuidePage() {
   const { slug = '' } = useParams();
-  const guide = getGuideSummary(slug);
+  const guide = getGuide(slug);
   if (!guide) return <NotFoundPage />;
 
   return (

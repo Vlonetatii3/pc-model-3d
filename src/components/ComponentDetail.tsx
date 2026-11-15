@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import type { PcComponent } from '../data/schema';
-import { getGuideSummary } from '../guides/catalog';
+import { getGuide } from '../guides/guides';
 import './ComponentDetail.css';
 
 const PENDING = 'pendiente de verificar';
@@ -14,7 +14,7 @@ export default function ComponentDetail({ component, onClose }: ComponentDetailP
   const headingId = `detalle-${component.id}`;
   const guides = component.relatedGuides.map((slug) => ({
     slug,
-    title: getGuideSummary(slug)?.title ?? slug,
+    title: getGuide(slug)?.title ?? slug,
   }));
 
   return (
