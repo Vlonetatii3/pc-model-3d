@@ -24,6 +24,7 @@ Trabajar en orden salvo que una tarea indique lo contrario.
 
 - [x] **T12** Cargar guías desde `content/guides/` con frontmatter validado.
 - [x] **T13** Página de guía: pasos, errores comunes, "cuándo pedir ayuda profesional" y `SafetyNotice` cuando corresponda.
+- [x] **T25** Rehacer el modelo 3D con más detalle (aspas, disipadores, chips, cables), colores por pieza y vista explotada en el visor. Pedido del autor; va antes de T14.
 - [ ] **T14** Redactar guía "Armado de PC paso a paso". Marcar contenido pendiente de revisión técnica.
 - [ ] **T15** Redactar guía "Cableado básico". Marcar contenido pendiente de revisión técnica.
 - [ ] **T16** Redactar guía "La PC no enciende". Marcar contenido pendiente de revisión técnica.

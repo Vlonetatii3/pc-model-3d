@@ -1,6 +1,6 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import Model from './Model';
 import { MODEL_URL } from './modelAvailability';
 import StudioLighting from './StudioLighting';
@@ -21,8 +21,19 @@ export interface ViewerProps {
 }
 
 export default function Viewer(props: ViewerProps) {
+  const [exploded, setExploded] = useState(false);
+
   return (
     <div className="viewer">
+      <div className="viewer-toolbar">
+        <button
+          type="button"
+          className={exploded ? 'viewer-toggle is-active' : 'viewer-toggle'}
+          onClick={() => setExploded((value) => !value)}
+        >
+          {exploded ? 'Armar la PC' : 'Separar piezas'}
+        </button>
+      </div>
       <div className="viewer-canvas">
         <Canvas
           camera={{ position: [-0.8, 0.45, 0.6], fov: 40, near: 0.01, far: 100 }}
@@ -31,14 +42,14 @@ export default function Viewer(props: ViewerProps) {
         >
           <StudioLighting />
           <Suspense fallback={null}>
-            <Model url={MODEL_URL} {...props} />
+            <Model url={MODEL_URL} exploded={exploded} {...props} />
           </Suspense>
           <OrbitControls makeDefault enableDamping enablePan={false} {...ORBIT_LIMITS} />
         </Canvas>
       </div>
       <p className="viewer-help">
         Arrastra para rotar. Usa la rueda del mouse o pellizca para acercar y alejar. Haz clic en
-        una pieza para ver qué es.
+        una pieza para ver qué es. «Separar piezas» las saca del gabinete para verlas mejor.
       </p>
     </div>
   );

@@ -1,7 +1,8 @@
 import { useCursor, useGLTF } from '@react-three/drei';
-import type { ThreeEvent } from '@react-three/fiber';
-import { useEffect, useState } from 'react';
+import { useFrame, type ThreeEvent } from '@react-three/fiber';
+import { useEffect, useRef, useState } from 'react';
 import type { Object3D } from 'three';
+import { createExploder, stepProgress, type Exploder } from './explode';
 import { applyHighlight, findModelNode, prepareSelectableMaterials } from './selection';
 
 /** Píxeles que puede moverse el puntero para que un clic no cuente como arrastre. */
@@ -20,22 +21,58 @@ function getHighlightMap(scene: Object3D, modelNodes: ReadonlySet<string>) {
   return map;
 }
 
+const exploders = new WeakMap<Object3D, Exploder>();
+
+function getExploder(scene: Object3D) {
+  let exploder = exploders.get(scene);
+  if (!exploder) {
+    exploder = createExploder(scene);
+    exploders.set(scene, exploder);
+  }
+  return exploder;
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+}
+
 export interface GltfModelProps {
   url: string;
   modelNodes: ReadonlySet<string>;
   selectedNode: string | null;
   onSelectNode: (node: string | null) => void;
+  /** Vista explotada: separa las piezas y oculta los cables. */
+  exploded?: boolean;
 }
 
-export default function GltfModel({ url, modelNodes, selectedNode, onSelectNode }: GltfModelProps) {
+export default function GltfModel({
+  url,
+  modelNodes,
+  selectedNode,
+  onSelectNode,
+  exploded = false,
+}: GltfModelProps) {
   const { scene } = useGLTF(url);
   const highlightMap = getHighlightMap(scene, modelNodes);
+  const exploder = getExploder(scene);
+  const progress = useRef<number | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   useCursor(hoveredNode !== null);
 
   useEffect(() => {
     applyHighlight(highlightMap, selectedNode, hoveredNode);
   }, [highlightMap, selectedNode, hoveredNode]);
+
+  useFrame((_, delta) => {
+    const target = exploded ? 1 : 0;
+    if (progress.current === target) return;
+    const next =
+      progress.current === null || prefersReducedMotion()
+        ? target
+        : stepProgress(progress.current, target, delta);
+    progress.current = next;
+    exploder.apply(next);
+  });
 
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
