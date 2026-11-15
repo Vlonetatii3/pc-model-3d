@@ -27,7 +27,7 @@ Trabajar en orden salvo que una tarea indique lo contrario.
 - [x] **T25** Rehacer el modelo 3D con más detalle (aspas, disipadores, chips, cables), colores por pieza y vista explotada en el visor. Pedido del autor; va antes de T14.
 - [x] **T14** Redactar guía "Armado de PC paso a paso". Marcar contenido pendiente de revisión técnica.
 - [x] **T15** Redactar guía "Cableado básico". Marcar contenido pendiente de revisión técnica.
-- [ ] **T16** Redactar guía "La PC no enciende". Marcar contenido pendiente de revisión técnica.
+- [x] **T16** Redactar guía "La PC no enciende". Marcar contenido pendiente de revisión técnica.
 - [ ] **T17** Glosario con búsqueda por texto.
 - [ ] **T18** Página "Apoyar" con URL configurable en `src/config.ts` y texto de transparencia.
 
