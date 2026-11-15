@@ -7,4 +7,20 @@ safetyWarning: true
 relatedComponents: ['placa-madre', 'cpu', 'ram', 'gpu', 'fuente', 'almacenamiento']
 ---
 
-<!-- Contenido pendiente (T14). Requiere revisión técnica antes de publicar. -->
+<!-- Esqueleto pendiente de redactar en T14. Requiere revisión técnica antes de publicar. -->
+
+## Qué necesitas
+
+Pendiente de redactar.
+
+## Pasos
+
+1. Pendiente de redactar.
+
+## Errores comunes
+
+Pendiente de redactar.
+
+## Cuándo pedir ayuda profesional
+
+Pendiente de redactar.

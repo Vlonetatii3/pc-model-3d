@@ -12,8 +12,20 @@ const validData = {
   relatedComponents: ['fuente', 'gpu'],
 };
 
-function mod(data: Record<string, unknown>, content = '## Pasos\n'): GuideModule {
-  return { data, content };
+const validBody = [
+  '## Qué necesitas',
+  'Destornillador.',
+  '## Pasos',
+  '1. Conectar.',
+  '## Errores comunes',
+  'Forzar conectores.',
+  '## Cuándo pedir ayuda profesional',
+  'Si huele a quemado.',
+  '',
+].join('\n');
+
+function mod(data: Record<string, unknown>, content = validBody): GuideModule {
+  return { data, content, html: '<h2>Qué necesitas</h2>' };
 }
 
 describe('parseGuides', () => {
@@ -22,7 +34,7 @@ describe('parseGuides', () => {
       { '/content/guides/cableado-basico.md': mod(validData) },
       componentIds,
     );
-    expect(guide).toEqual({ ...validData, body: '## Pasos\n' });
+    expect(guide).toEqual({ ...validData, body: validBody, html: '<h2>Qué necesitas</h2>' });
   });
 
   it.each([
@@ -72,6 +84,15 @@ describe('parseGuides', () => {
     ).toThrow(/"monitor", que no existe/);
   });
 
+  it('rechaza un cuerpo sin las secciones obligatorias', () => {
+    expect(() =>
+      parseGuides(
+        { '/content/guides/cableado-basico.md': mod(validData, '## Pasos\n1. Uno.\n') },
+        componentIds,
+      ),
+    ).toThrow(/cableado-basico\.md: las secciones deben ser/);
+  });
+
   it('reporta todos los errores juntos', () => {
     const run = () =>
       parseGuides(
@@ -107,6 +128,13 @@ describe('content/guides', () => {
         const component = components.find((c) => c.id === id);
         expect(component?.relatedGuides, `${guide.slug} → ${id}`).toContain(guide.slug);
       }
+    }
+  });
+
+  it('el HTML generado en build incluye las secciones', () => {
+    for (const guide of guides) {
+      expect(guide.html, guide.slug).toContain('<h2>Cuándo pedir ayuda profesional</h2>');
+      expect(guide.html, guide.slug).toMatch(/<ol>/);
     }
   });
 

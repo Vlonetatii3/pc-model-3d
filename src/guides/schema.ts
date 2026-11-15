@@ -22,4 +22,6 @@ export type GuideFrontmatter = z.infer<typeof guideFrontmatterSchema>;
 export interface Guide extends GuideFrontmatter {
   /** Cuerpo en Markdown, sin el frontmatter. */
   body: string;
+  /** Cuerpo convertido a HTML en build (contenido propio del repo, no de usuarios). */
+  html: string;
 }

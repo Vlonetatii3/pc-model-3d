@@ -1,0 +1,23 @@
+.guide {
+  max-width: 46rem;
+}
+
+.guide-meta {
+  margin-top: -0.5rem;
+  color: var(--color-muted);
+}
+
+.guide-body h2,
+.guide h2 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.guide-body ol,
+.guide-body ul {
+  padding-left: 1.5rem;
+}
+
+.guide-body li + li {
+  margin-top: 0.375rem;
+}

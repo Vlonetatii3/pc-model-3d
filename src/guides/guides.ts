@@ -1,15 +1,18 @@
 import { components } from '../data/components';
 import { guideFrontmatterSchema, type Guide } from './schema';
+import { checkSections } from './sections';
 
 export interface GuideModule {
   data: Record<string, unknown>;
   content: string;
+  html: string;
 }
 
 /**
  * Valida los módulos de guía (ruta → { data, content }).
  * Comprueba el frontmatter, que el slug coincida con el nombre del archivo,
- * que no haya slugs repetidos y que relatedComponents apunte a ids existentes.
+ * que no haya slugs repetidos, que relatedComponents apunte a ids existentes
+ * y que el cuerpo tenga las secciones obligatorias en orden.
  */
 export function parseGuides(
   modules: Record<string, GuideModule>,
@@ -44,7 +47,11 @@ export function parseGuides(
       }
     }
 
-    guides.push({ ...data, body: module.content });
+    for (const problem of checkSections(module.content)) {
+      errors.push(`${file}: ${problem}`);
+    }
+
+    guides.push({ ...data, body: module.content, html: module.html });
   }
 
   if (errors.length > 0) {
