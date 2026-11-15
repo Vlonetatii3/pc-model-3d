@@ -27,8 +27,8 @@ function frameObject(
 
   if (controls) {
     controls.target.copy(framing.target);
-    controls.minDistance = framing.distance * 0.3;
-    controls.maxDistance = framing.distance * 3;
+    controls.minDistance = framing.minDistance;
+    controls.maxDistance = framing.maxDistance;
     controls.update();
   } else {
     camera.lookAt(framing.target);

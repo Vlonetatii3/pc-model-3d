@@ -49,6 +49,31 @@ describe('computeFraming', () => {
     expect(far).toBeGreaterThan(distance + radius);
   });
 
+  it('near y far contienen al modelo en todo el rango del zoom', () => {
+    const { minDistance, maxDistance, near, far } = computeFraming(
+      cube,
+      40,
+      1.5,
+      new Vector3(1, 1, 1),
+    );
+    expect(near).toBeGreaterThan(0);
+    expect(near).toBeLessThan(Math.max(minDistance - radius, 0) || minDistance);
+    // Alejado al máximo, el modelo (y la holgura de la vista explotada) sigue dentro de far.
+    expect(far).toBeGreaterThan(maxDistance + radius);
+  });
+
+  it('limita el alejamiento para que la PC se siga viendo grande', () => {
+    const { distance, minDistance, maxDistance } = computeFraming(
+      cube,
+      40,
+      1,
+      new Vector3(0, 0, 1),
+    );
+    expect(minDistance).toBeLessThan(distance);
+    expect(maxDistance).toBeGreaterThan(distance);
+    expect(maxDistance).toBeLessThanOrEqual(distance * 2);
+  });
+
   it('usa una dirección por defecto si recibe un vector nulo', () => {
     const { position } = computeFraming(cube, 45, 1, new Vector3(0, 0, 0));
     expect(Number.isFinite(position.z)).toBe(true);

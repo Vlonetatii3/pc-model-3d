@@ -4,9 +4,21 @@ export interface Framing {
   target: Vector3;
   position: Vector3;
   distance: number;
+  /** Límites del zoom de los controles de órbita. */
+  minDistance: number;
+  maxDistance: number;
   near: number;
   far: number;
 }
+
+/** Cuánto se puede acercar o alejar la cámara respecto de la distancia de encuadre. */
+export const MIN_ZOOM_FACTOR = 0.3;
+export const MAX_ZOOM_FACTOR = 1.6;
+/**
+ * Holgura (en radios del modelo) para lo que sale de la caja inicial,
+ * como las piezas desplazadas en la vista explotada.
+ */
+const EXTRA_DEPTH_RADII = 2;
 
 /**
  * Calcula dónde poner la cámara para que todo `box` quede visible.
@@ -36,11 +48,17 @@ export function computeFraming(
   const target = sphere.center.clone();
   const position = target.clone().addScaledVector(dir, distance);
 
+  const minDistance = distance * MIN_ZOOM_FACTOR;
+  const maxDistance = distance * MAX_ZOOM_FACTOR;
+
+  // near y far cubren todo el rango del zoom: el modelo no se recorta al alejarse ni al acercarse.
   return {
     target,
     position,
     distance,
-    near: Math.max(distance - radius * 2, distance / 100),
-    far: distance + radius * 4,
+    minDistance,
+    maxDistance,
+    near: Math.min(distance / 100, Math.max(minDistance - radius * EXTRA_DEPTH_RADII, 1e-4)),
+    far: maxDistance + radius * EXTRA_DEPTH_RADII,
   };
 }
