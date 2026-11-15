@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { guides } from '../guides/guides';
 import GuidePage from './GuidePage';
@@ -8,6 +9,7 @@ function renderGuide(slug: string) {
     <MemoryRouter initialEntries={[`/guias/${slug}`]}>
       <Routes>
         <Route path="/guias/:slug" element={<GuidePage />} />
+        <Route path="/guias" element={<h1>Índice de guías</h1>} />
       </Routes>
     </MemoryRouter>,
   );
@@ -48,6 +50,19 @@ describe('GuidePage', () => {
       expect(screen.queryByRole('note')).not.toBeInTheDocument();
     } finally {
       guide.safetyWarning = original;
+    }
+  });
+
+  it('los enlaces internos del contenido navegan dentro del sitio', async () => {
+    renderGuide('armado-paso-a-paso');
+    const [link] = screen.getAllByRole('link', { name: 'Cableado básico' });
+    await userEvent.click(link);
+    expect(screen.getByRole('heading', { level: 1, name: 'Cableado básico' })).toBeInTheDocument();
+  });
+
+  it('marca el contenido como pendiente de revisión técnica', () => {
+    for (const guide of guides) {
+      expect(guide.body, guide.slug).toMatch(/pendiente de revisión técnica/i);
     }
   });
 
